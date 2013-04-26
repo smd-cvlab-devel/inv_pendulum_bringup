@@ -1,0 +1,47 @@
+<launch>
+  <node name="ardrone" pkg="ros_vrpn_client"
+   type="ros_vrpn_client" output="screen">
+    <param name="vrpn_server_ip" value="172.16.0.130" />
+    <remap from="ardrone/pose" to="ardrone/mocap_pose" />
+  </node>
+
+  <node name="pendulum" pkg="ros_vrpn_client"
+   type="ros_vrpn_client" output="screen">
+    <param name="vrpn_server_ip" value="172.16.0.130" />
+    <remap from="pendulum/pose" to="pendulum/mocap_pose" />
+  </node>
+
+  <node name="mocap_align" pkg="nodelet"
+   type="nodelet" output="screen"
+   args="standalone mocap_align/MocapAlign">
+    <param name="frame_base" value="optitrak" />
+    <param name="frame_a" value="ardrone" />
+    <param name="frame_b" value="pendulum" />
+    <param name="rate" value="100" />
+  </node>
+
+  <node name="ardrone_mocap_kalman" pkg="nodelet"
+   type="nodelet" output="screen"
+   args="standalone mocap_kalman/MocapKalman">
+    <param name="frame_base" value="optitrak" />
+    <param name="frame_id" value="ardrone" />
+    <param name="rate" value="100" />
+  </node>
+
+  <node name="pendulum_mocap_kalman" pkg="nodelet"
+   type="nodelet" output="screen"
+   args="standalone mocap_kalman/MocapKalman">
+    <param name="frame_base" value="optitrak" />
+    <param name="frame_id" value="pendulum_aligned" />
+    <param name="rate" value="100" />
+  </node>
+
+  <node name="ss" pkg="nodelet"
+   type="nodelet" output="screen"
+   args="standalone inv_pendulum_ss/InvPendulumSS">
+    <remap from="uav_odom" to="ardrone/mocap_odom" />
+    <remap from="pendulum_odom" to="pendulum_aligned/mocap_odom" />
+    <remap from="cmd_vel" to="ardrone/cmd_vel" />
+  </node>
+
+</launch>

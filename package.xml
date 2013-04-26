@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <name>inv_pendulum_bringup</name>
+  <version>0.0.1</version>
+  <description>The inv_pendulum_bringup package</description>
+
+  <maintainer email="logans@cottsay.net">Scott K Logan</maintainer>
+
+  <license>BSD</license>
+
+  <!-- <url type="website">http://ros.org/wiki/inv_pendulum_bringup</url> -->
+
+  <author email="logans@cottsay.net">Scott K Logan</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>ros_vrpn_client</run_depend>
+  <run_depend>mocap_kalman</run_depend>
+  <run_depend>inv_pendulum_pid</run_depend>
+
+  <export>
+  </export>
+</package>
